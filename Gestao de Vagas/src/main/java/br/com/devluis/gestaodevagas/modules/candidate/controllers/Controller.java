@@ -1,6 +1,7 @@
-package br.com.devluis.gestaodevagas;
+package br.com.devluis.gestaodevagas.modules.candidate.controllers;
 
-import org.springframework.http.ResponseEntity;
+import br.com.devluis.gestaodevagas.modules.candidate.CandidateEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
     @PostMapping("/")
-    public ResponseEntity<CandidateEntity> create(@RequestBody CandidateEntity candidate){
+    public void create(@Valid @RequestBody CandidateEntity candidate){
+        System.out.println("Candidato: " + candidate);
         System.out.println(candidate.getEmail());
-        return ResponseEntity.ok().body(candidate);
+
     }
 }
