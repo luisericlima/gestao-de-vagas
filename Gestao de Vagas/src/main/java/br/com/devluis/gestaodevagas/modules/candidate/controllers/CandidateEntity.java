@@ -1,4 +1,4 @@
-package br.com.devluis.gestaodevagas.modules.candidate;
+package br.com.devluis.gestaodevagas.modules.candidate.controllers;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +16,9 @@ import java.util.UUID;
 
 @Entity(name = "candidate")
 @Data
+
 public class CandidateEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
