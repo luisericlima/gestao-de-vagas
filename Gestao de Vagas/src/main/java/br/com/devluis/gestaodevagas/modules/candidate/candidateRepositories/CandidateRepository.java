@@ -1,5 +1,6 @@
-package br.com.devluis.gestaodevagas.modules.candidate.controllers;
+package br.com.devluis.gestaodevagas.modules.candidate.candidateRepositories;
 
+import br.com.devluis.gestaodevagas.modules.candidate.candidateEntities.CandidateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

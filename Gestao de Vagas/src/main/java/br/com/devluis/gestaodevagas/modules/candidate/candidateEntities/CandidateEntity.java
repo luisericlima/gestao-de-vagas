@@ -1,4 +1,4 @@
-package br.com.devluis.gestaodevagas.modules.candidate.controllers;
+package br.com.devluis.gestaodevagas.modules.candidate.candidateEntities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

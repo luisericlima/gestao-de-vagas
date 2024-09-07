@@ -29,7 +29,7 @@ public class CompanyEntity {
     @Length(min = 10, max = 100, message = "A senha deve ter entre 10 e 100 caracteres")
     private String password;
     private String website;
-    private String nome;
+    private String name;
     private String description;
 
     @CreationTimestamp
