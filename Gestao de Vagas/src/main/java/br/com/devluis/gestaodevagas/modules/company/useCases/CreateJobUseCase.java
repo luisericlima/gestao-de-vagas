@@ -1,7 +1,7 @@
-package br.com.devluis.gestaodevagas.modules.candidate.company.useCases;
+package br.com.devluis.gestaodevagas.modules.company.useCases;
 
-import br.com.devluis.gestaodevagas.modules.candidate.company.entities.JobEntity;
-import br.com.devluis.gestaodevagas.modules.candidate.company.repositories.JobRepository;
+import br.com.devluis.gestaodevagas.modules.company.entities.JobEntity;
+import br.com.devluis.gestaodevagas.modules.company.repositories.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

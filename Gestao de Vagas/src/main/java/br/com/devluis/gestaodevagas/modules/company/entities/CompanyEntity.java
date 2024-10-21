@@ -1,4 +1,4 @@
-package br.com.devluis.gestaodevagas.modules.candidate.company.entities;
+package br.com.devluis.gestaodevagas.modules.company.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -19,6 +19,7 @@ public class CompanyEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private String name;
     @NotBlank
     @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaços")
     private String username;
@@ -29,7 +30,6 @@ public class CompanyEntity {
     @Length(min = 10, max = 100, message = "A senha deve ter entre 10 e 100 caracteres")
     private String password;
     private String website;
-    private String name;
     private String description;
 
     @CreationTimestamp

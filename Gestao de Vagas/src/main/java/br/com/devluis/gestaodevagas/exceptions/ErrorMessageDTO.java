@@ -1,4 +1,4 @@
-package br.com.devluis.gestaodevagas.modules.candidate.exceptions;
+package br.com.devluis.gestaodevagas.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

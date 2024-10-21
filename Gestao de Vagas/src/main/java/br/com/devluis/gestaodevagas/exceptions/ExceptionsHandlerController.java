@@ -1,4 +1,4 @@
-package br.com.devluis.gestaodevagas.modules.candidate.exceptions;
+package br.com.devluis.gestaodevagas.exceptions;
 
 
 import org.springframework.context.MessageSource;
@@ -28,7 +28,6 @@ public class ExceptionsHandlerController {
             String message = messageSource.getMessage(err, LocaleContextHolder.getLocale());
 
             var error = new ErrorMessageDTO(message, err.getField());
-
             dto.add(error);
         });
 

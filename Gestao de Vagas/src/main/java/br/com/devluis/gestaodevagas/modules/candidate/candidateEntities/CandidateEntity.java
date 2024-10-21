@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @Entity(name = "candidate")
 @Data
-
 public class CandidateEntity {
 
 
