@@ -26,6 +26,7 @@ public class AuthCandidateUseCase {
     private CandidateRepository candidateRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     public AuthCandidateResponseDTO execute(AuthCandidateRequestDTO authCandidateRequestDTO)
             throws AuthenticationException {
         var candidate = this.candidateRepository.findByUsername(authCandidateRequestDTO.username())
@@ -38,15 +39,18 @@ public class AuthCandidateUseCase {
             throw new AuthenticationException();
         }
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
         var token = JWT.create()
                 .withIssuer("javagas")
                 .withSubject(candidate.getId().toString())
                 .withClaim("roles", Arrays.asList("candidate"))
-                .withExpiresAt(Instant.now().plus(Duration.ofMinutes(10)))
+                .withExpiresAt(expiresIn)
                 .sign(algorithm);
 
         var AuthCandidateResponse = AuthCandidateResponseDTO.builder()
-                .access_token(token).build();
+                .access_token(token)
+                .expires_in(expiresIn.toEpochMilli())
+                .build();
         return AuthCandidateResponse;
     }
 }
