@@ -2,6 +2,7 @@ package br.com.devluis.gestaodevagas.modules.company.useCases;
 
 import javax.naming.AuthenticationException;
 import br.com.devluis.gestaodevagas.modules.company.dto.AuthCompanyDTO;
+import br.com.devluis.gestaodevagas.modules.company.dto.AuthCompanyResponseDTO;
 import br.com.devluis.gestaodevagas.modules.company.repositories.CompanyRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Service
 public class AuthCompanyUseCase {
@@ -26,7 +28,7 @@ public class AuthCompanyUseCase {
     private CompanyRepository companyRepository;
 
 
-    public String execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+    public AuthCompanyResponseDTO execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
         var company = this.companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(
                 ()-> {throw new UsernameNotFoundException("User/password incorrect");}
         );
@@ -40,11 +42,16 @@ public class AuthCompanyUseCase {
         //Se for igual -> gerar tokens
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
-        var token = JWT.create().withIssuer("javagas")
+        var expiresIn = Instant.now().plus(Duration.ofHours(2));
+
+        var token = JWT.create()
+                .withIssuer("javagas")
                 .withSubject(company.getId().toString())
-                .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+                .withExpiresAt(expiresIn)
+                .withClaim("roles", Arrays.asList("COMPANY"))
                 .sign(algorithm);
-        return token;
+        var authCompanyResponseDTO =AuthCompanyResponseDTO.builder().access_token(token).expires_in(expiresIn.toEpochMilli()).build();
+        return authCompanyResponseDTO;
         // essa linha de comando retorna uma String por isso foi declarado o retorno do metodo
     }
 }
