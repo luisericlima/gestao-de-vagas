@@ -2,6 +2,7 @@ package br.com.devluis.gestaodevagas.modules.candidate.controllers;
 
 import br.com.devluis.gestaodevagas.modules.candidate.candidateEntities.CandidateEntity;
 import br.com.devluis.gestaodevagas.modules.candidate.dto.ProfileCandidateResponseDTO;
+import br.com.devluis.gestaodevagas.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import br.com.devluis.gestaodevagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.devluis.gestaodevagas.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.devluis.gestaodevagas.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -39,8 +40,12 @@ public class CandidateController {
     private ProfileCandidateUseCase profileCandidateUseCase;
 
     @Autowired
-
     private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
+
+    @Autowired
+    private ApplyJobCandidateUseCase applyJobCandidateUseCase;
+
+
 
     @PostMapping("/")
     @Operation(summary = "Cadastro de candidato", description = "Essa função é responsável por cadastrar um candidato")
@@ -72,10 +77,10 @@ public class CandidateController {
     })
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {//COMO ESTAMOS LIDANDO COM USUARIOS JÁ AUTENTICADOS DEVEMOS SEMPRE RECUPERAR OS DADOS QUE QUEREMOS NA REQUEST
-        var idCandidate = request.getAttribute("candidate_id");
+        var idCandidate = request.getAttribute("candidate_id"); // recuperando o candidate_id da request
         try {
             var profile = this.profileCandidateUseCase
-                    .execute(UUID.fromString(idCandidate.toString()));
+                    .execute(UUID.fromString(idCandidate.toString())); // quando o idCandidate vem da requisicao ele vem como String e precisamos de um UUID por isso é feito a conversao
             return ResponseEntity.ok().body(profile);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -97,4 +102,23 @@ public class CandidateController {
     public List<JobEntity> findJobByFilter(@RequestParam String filter) {
         return this.listAllJobsByFilterUseCase.execute(filter);
     }
+
+    @PostMapping("/job/apply")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @Operation(summary = "Inscrição do candidato para uma vaga",
+                description = "Essa função é responspavel por realizar a inscrição do candidato em uma vaga."
+    )
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<Object> applyjob(HttpServletRequest request, @RequestBody UUID job) {
+        try {
+            var idCandidate = request.getAttribute("candidate_id");
+            var result = this.applyJobCandidateUseCase.execute(UUID.fromString(idCandidate.toString()), job);
+
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
 }

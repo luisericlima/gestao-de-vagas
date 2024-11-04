@@ -12,4 +12,5 @@ public interface CandidateRepository extends JpaRepository<CandidateEntity, UUID
     Optional<CandidateEntity> findByUsernameOrEmail(String username, String email); //poderia ser AND ou OR na nomenclatura
     // Spring entende o finBy e procura conforme o que foi declarado
     Optional<CandidateEntity> findByUsername(String username);
+    Optional<CandidateEntity> findById(UUID id);
 }
